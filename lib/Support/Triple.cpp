@@ -29,6 +29,7 @@ StringRef Triple::getArchTypeName(ArchType Kind) {
   case avr:            return "avr";
   case bpfel:          return "bpfel";
   case bpfeb:          return "bpfeb";
+  case geovm:            return "geovm";
   case hexagon:        return "hexagon";
   case mips:           return "mips";
   case mipsel:         return "mipsel";
@@ -111,6 +112,8 @@ StringRef Triple::getArchTypePrefix(ArchType Kind) {
 
   case bpfel:
   case bpfeb:       return "bpf";
+
+  case geovm:       return "geo";
 
   case sparcv9:
   case sparcel:
@@ -268,6 +271,7 @@ Triple::ArchType Triple::getArchTypeForLLVMName(StringRef Name) {
     .Case("armeb", armeb)
     .Case("avr", avr)
     .StartsWith("bpf", BPFArch)
+    .Case("geo", geovm)
     .Case("mips", mips)
     .Case("mipsel", mipsel)
     .Case("mips64", mips64)
@@ -438,6 +442,7 @@ static Triple::ArchType parseArch(StringRef ArchName) {
     .Case("wasm64", Triple::wasm64)
     .Case("renderscript32", Triple::renderscript32)
     .Case("renderscript64", Triple::renderscript64)
+    .Case("geovm", Triple::geovm)
     .Default(Triple::UnknownArch);
 
   // Some architectures require special parsing logic just to compute the
@@ -653,6 +658,7 @@ static Triple::ObjectFormatType getDefaultFormat(const Triple &T) {
   case Triple::avr:
   case Triple::bpfeb:
   case Triple::bpfel:
+  case Triple::geovm:
   case Triple::hexagon:
   case Triple::lanai:
   case Triple::hsail:
@@ -1251,6 +1257,7 @@ static unsigned getArchPointerBitWidth(llvm::Triple::ArchType Arch) {
   case llvm::Triple::amdgcn:
   case llvm::Triple::bpfel:
   case llvm::Triple::bpfeb:
+  case llvm::Triple::geovm:
   case llvm::Triple::le64:
   case llvm::Triple::mips64:
   case llvm::Triple::mips64el:
@@ -1294,6 +1301,7 @@ Triple Triple::get32BitArchVariant() const {
   case Triple::msp430:
   case Triple::systemz:
   case Triple::ppc64le:
+  case Triple::geovm:
     T.setArch(UnknownArch);
     break;
 
@@ -1371,6 +1379,7 @@ Triple Triple::get64BitArchVariant() const {
   case Triple::aarch64_be:
   case Triple::bpfel:
   case Triple::bpfeb:
+  case Triple::geovm:
   case Triple::le64:
   case Triple::amdil64:
   case Triple::amdgcn:
@@ -1422,6 +1431,7 @@ Triple Triple::getBigEndianArchVariant() const {
   case Triple::amdil64:
   case Triple::amdil:
   case Triple::avr:
+  case Triple::geovm:
   case Triple::hexagon:
   case Triple::hsail64:
   case Triple::hsail:
@@ -1507,6 +1517,7 @@ bool Triple::isLittleEndian() const {
   case Triple::arm:
   case Triple::avr:
   case Triple::bpfel:
+  case Triple::geovm:
   case Triple::hexagon:
   case Triple::hsail64:
   case Triple::hsail:

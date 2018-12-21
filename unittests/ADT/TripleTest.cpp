@@ -135,6 +135,12 @@ TEST(TripleTest, ParsedIDs) {
   EXPECT_EQ(Triple::Linux, T.getOS());
   EXPECT_EQ(Triple::UnknownEnvironment, T.getEnvironment());
 
+  T = Triple("geovm-unknown-unknown");
+  EXPECT_EQ(Triple::geovm, T.getArch());
+  EXPECT_EQ(Triple::UnknownVendor, T.getVendor());
+  EXPECT_EQ(Triple::UnknownOS, T.getOS());
+  EXPECT_EQ(Triple::UnknownEnvironment, T.getEnvironment());
+
   T = Triple("powerpc64-bgq-linux");
   EXPECT_EQ(Triple::ppc64, T.getArch());
   EXPECT_EQ(Triple::BGQ, T.getVendor());
@@ -856,6 +862,11 @@ TEST(TripleTest, BitWidthPredicates) {
   EXPECT_FALSE(T.isArch64Bit());
 
   T.setArch(Triple::riscv64);
+  EXPECT_FALSE(T.isArch16Bit());
+  EXPECT_FALSE(T.isArch32Bit());
+  EXPECT_TRUE(T.isArch64Bit());
+
+  T.setArch(Triple::geovm);
   EXPECT_FALSE(T.isArch16Bit());
   EXPECT_FALSE(T.isArch32Bit());
   EXPECT_TRUE(T.isArch64Bit());
